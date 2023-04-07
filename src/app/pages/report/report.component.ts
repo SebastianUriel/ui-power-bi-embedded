@@ -35,16 +35,12 @@ export class ReportComponent {
   }
 
   ngOnInit() {
-    if (this.authService.instance.getActiveAccount() == null) {
-      this.router.navigate(['/login']);
-    } else {
-      if (this.reportId && this.datasetId) {
-        this.powerbiService.getEmbeddedToken(this.reportId, this.datasetId).subscribe(
-          data => {
-            this.showReport(this.reportId, "https://app.powerbi.com/reportEmbed?reportId=" + this?.reportId, data?.token);
-          }
-        );
-      }
+    if (this.reportId && this.datasetId) {
+      this.powerbiService.getEmbeddedToken(this.reportId, this.datasetId).subscribe(
+        data => {
+          this.showReport(this.reportId, "https://app.powerbi.com/reportEmbed?reportId=" + this?.reportId, data?.token);
+        }
+      );
     }
   }
 
@@ -71,6 +67,7 @@ export class ReportComponent {
 
   logout(status: boolean) {
     if (status) {
+      localStorage.removeItem('token');
       this.authService.logout();
     }
   }

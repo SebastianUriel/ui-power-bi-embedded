@@ -1,13 +1,11 @@
-<section class="hero is-fullheight">
+<section class="main">
     <app-navbar (logoutActived)="logout($event)"></app-navbar>
 
-    <div class="hero-body">
+    <div class="main-container">
         <div class="container">
-            <div class="section">
-                <powerbi-report *ngIf="embedConfig != undefined" [embedConfig]="embedConfig"
-                    [cssClassName]="cssClassName" [phasedEmbedding]="phasedEmbedding" [eventHandlers]="eventHandlers">
-                </powerbi-report>
-            </div>
+            <powerbi-report *ngIf="embedConfig != undefined" [embedConfig]="embedConfig" [cssClassName]="cssClassName"
+                [phasedEmbedding]="phasedEmbedding" [eventHandlers]="eventHandlers">
+            </powerbi-report>
         </div>
     </div>
 </section>

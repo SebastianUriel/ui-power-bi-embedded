@@ -17,16 +17,12 @@ export class ReportsComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit(): void {
-    if (this.authService.instance.getActiveAccount() == null) {
-      this.router.navigate(['/login']);
-    } else {
-      if (!this.reports) {
-        this.powerbiService.getReports().subscribe(
-          reports => {
-            this.reports = reports?.value;
-          }
-        );
-      }
+    if (!this.reports) {
+      this.powerbiService.getReports().subscribe(
+        reports => {
+          this.reports = reports?.value;
+        }
+      );
     }
   }
 
@@ -36,6 +32,7 @@ export class ReportsComponent implements OnInit {
 
   logout(status: boolean) {
     if (status) {
+      localStorage.removeItem('token');
       this.authService.logout();
     }
   }
