@@ -1,0 +1,27 @@
+<section class="hero is-fullheight">
+    <app-navbar (logoutActived)="logout($event)"></app-navbar>
+
+    <div class="hero-body">
+        <div class="container">
+            <div class="section">
+                <div class="row columns is-multiline">
+                    <div class="column is-4" *ngFor="let report of reports">
+                        <div class="card">
+                            <div class="card-content">
+                                <div class="media">
+                                    <div class="media-content">
+                                        <p class="title is-4 no-padding">{{report.name}}</p>
+                                        <p class="subtitle is-6">{{report.reportType}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <footer class="card-footer">
+                                <a class="card-footer-item" (click)="verReporte(report)">Ver</a>
+                            </footer>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
