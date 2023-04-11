@@ -14,9 +14,11 @@ export class ReportsComponent implements OnInit {
 
   constructor(private authService: AuthService,
     private powerbiService: PowerBIService,
-    private router: Router) { }
+    private router: Router) {
+  }
 
-  ngOnInit(): void {
+  async ngOnInit() {
+    await this.authService.handleActiveAccount();
     if (!this.reports) {
       this.powerbiService.getReports().subscribe(reports => this.reports = reports?.value);
     }

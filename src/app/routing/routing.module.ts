@@ -7,6 +7,7 @@ import { ReportComponent } from '../pages/report/report.component';
 import { ReportsComponent } from '../pages/reports/reports.component';
 import { SharedModule } from '../shared/shared.module';
 import { AuthGuard } from '../shared/guards/auth.guard';
+import { UserAuthGuard } from '../shared/guards/user-auth.guard';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'login' },
@@ -17,12 +18,12 @@ const routes: Routes = [
   {
     path: 'report/:reportId',
     component: ReportComponent,
-    canActivate: [AuthGuard] 
+    canActivate: [UserAuthGuard, AuthGuard] 
   },
   {
     path: 'reports',
     component: ReportsComponent,
-    canActivate: [AuthGuard]
+    canActivate: [UserAuthGuard, AuthGuard]
   }
 ];
 

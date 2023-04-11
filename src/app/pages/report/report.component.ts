@@ -34,6 +34,7 @@ export class ReportComponent {
   }
 
   async ngOnInit() {
+    await this.authService.handleActiveAccount();
     if (this.reportId) {
       this.powerbiReport.embedConfig = null;
       this.hasError = false;

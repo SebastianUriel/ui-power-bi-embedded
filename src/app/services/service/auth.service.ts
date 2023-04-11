@@ -25,6 +25,7 @@ export class AuthService {
   }
 
   public loginPopup() {
+    sessionStorage.clear();
     const scopes = ['https://analysis.windows.net/powerbi/api/.default'];
     this.msalService.acquireTokenPopup({ scopes })
       .subscribe((response: AuthenticationResult) => {
@@ -37,7 +38,16 @@ export class AuthService {
   public logout(status?: boolean) {
     if(status) {
       localStorage.removeItem('token');
-      this.msalService.logout();
+      const activeAccount = this.msalService.instance.getActiveAccount();
+      if (activeAccount != null) {
+        const logoutHint = activeAccount.idTokenClaims?.login_hint;
+        this.msalService.logoutRedirect({ 
+          account: activeAccount, 
+          logoutHint: logoutHint 
+        });
+      } else {
+        this.msalService.logout();
+      }
     }
   }
 
