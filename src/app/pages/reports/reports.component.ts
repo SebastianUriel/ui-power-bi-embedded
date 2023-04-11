@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { MsalService } from '@azure/msal-angular';
+import { AuthService } from 'src/app/services/service/auth.service';
 import { PowerBIService } from 'src/app/services/service/powerbi.service';
 
 @Component({
@@ -12,29 +12,22 @@ export class ReportsComponent implements OnInit {
 
   public reports?: any[];
 
-  constructor(private authService: MsalService,
+  constructor(private authService: AuthService,
     private powerbiService: PowerBIService,
     private router: Router) { }
 
   ngOnInit(): void {
     if (!this.reports) {
-      this.powerbiService.getReports().subscribe(
-        reports => {
-          this.reports = reports?.value;
-        }
-      );
+      this.powerbiService.getReports().subscribe(reports => this.reports = reports?.value);
     }
   }
 
-  verReporte(data: any) {
-    this.router.navigate(['/report', data?.id, 'dataset', data?.datasetId]);
+  showReport(reportId: string) {
+    this.router.navigate(['/report', reportId]);
   }
 
   logout(status: boolean) {
-    if (status) {
-      localStorage.removeItem('token');
-      this.authService.logout();
-    }
+    this.authService.logout(status);
   }
 
 }

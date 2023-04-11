@@ -3,10 +3,19 @@
 
     <div class="main-container">
         <div class="container">
-            <div *ngIf="!hasError" id="powerbi-report"></div>
-            <div *ngIf="hasError" class="has-text-centered">
+            <div *ngIf="!hasError && powerbiReport.embedConfig != null" id="powerbi-report">
+                <powerbi-report 
+                    [embedConfig]="powerbiReport.embedConfig"
+                    [phasedEmbedding] = "powerbiReport.phasedEmbedding"
+                    [cssClassName] = "powerbiReport.cssClassName"
+                    [eventHandlers] = "powerbiReport.eventHandlers"
+                    >
+                </powerbi-report>
+            </div>
+            <div *ngIf="hasError || powerbiReport.embedConfig == null" class="has-text-centered">
                 <h1 class="title">Error al cargar el reporte</h1>
-                <h2 class="subtitle">Hubo un problema al cargar el reporte, al parecer no tienes acceso al reporte. Por favor comuníquese con el área de soporte.</h2>
+                <h2 class="subtitle">Hubo un problema al cargar el reporte, al parecer no tienes acceso al reporte. Por
+                    favor comuníquese con el área de soporte.</h2>
             </div>
         </div>
     </div>

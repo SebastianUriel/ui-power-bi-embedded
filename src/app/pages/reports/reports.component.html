@@ -19,7 +19,7 @@
                 <tbody>
                     <tr *ngFor="let report of reports">
                         <td>{{report.name}}</td>
-                        <td><a class="button is-primary is-light" (click)="verReporte(report)">Ver</a></td>
+                        <td><a class="button is-primary is-light" (click)="showReport(report.id)">Ver</a></td>
                     </tr>
                 </tbody>
             </table>

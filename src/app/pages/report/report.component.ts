@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
-import { MsalService } from '@azure/msal-angular';
 import { PowerBIService } from 'src/app/services/service/powerbi.service';
-import * as powerbiClient from 'powerbi-client';
 import * as models from 'powerbi-models';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from 'src/app/services/service/auth.service';
 
 @Component({
   selector: 'app-report',
@@ -12,42 +11,43 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class ReportComponent {
 
-  public reportId?: string | undefined;
-  public datasetId?: string | undefined;
+  public reportId?: string;
+  public reportData?: any;
+  public embededToken?: any;
   public hasError: boolean = false;
 
-  constructor(private authService: MsalService,
-    private powerbiService: PowerBIService,
-    private route: ActivatedRoute) {
-    this.route.params.subscribe(params => {
-      this.reportId = params['reportId'];
-      this.datasetId = params['datasetId'];
-    });
+  public powerbiReport: any = {
+    embedConfig: null,
+    cssClassName: "reportClass",
+    phasedEmbedding: false,
+    eventHandlers: new Map([
+      ['loaded', () => console.log('Report loaded')],
+      ['rendered', () => console.log('Report rendered')],
+      ['error', (event: any) => console.log(event.detail)]
+    ])
   }
 
-  ngOnInit() {
-    if (this.reportId && this.datasetId) {
+  constructor(private authService: AuthService,
+    private powerbiService: PowerBIService,
+    private route: ActivatedRoute) {
+    this.route.params.subscribe(params => this.reportId = params['reportId']);
+  }
+
+  async ngOnInit() {
+    if (this.reportId) {
+      this.powerbiReport.embedConfig = null;
       this.hasError = false;
-      this.powerbiService.getEmbeddedToken(this.reportId, this.datasetId).subscribe(
-        data => {
-          this.showReport(this.reportId, "https://app.powerbi.com/reportEmbed?reportId=" + this?.reportId, data?.token);
-        },
-        error => {
-          this.hasError = true;
-        }
-      );
+      this.reportData = await this.powerbiService.getReport(this.reportId).toPromise();
+      this.embededToken = await this.powerbiService.getEmbeddedToken(this.reportData?.id, this.reportData?.datasetId).toPromise();
+      this.showReport(this.reportData?.id, this.embededToken?.token);
     }
   }
 
-  async showReport(reportId?: string, embedUrl?: string, accessToken?: string) {
-    let loadedResolve: any, reportLoaded = new Promise((res) => { loadedResolve = res; });
-    let renderedResolve: any, reportRendered = new Promise((res) => { renderedResolve = res; });
-    const powerbi: powerbiClient.service.Service = window["powerbi"];
-
-    let config: models.IReportEmbedConfiguration = {
+  async showReport(reportId?: string, accessToken?: string) {
+    this.powerbiReport.embedConfig = {
       type: 'report',
       id: reportId,
-      embedUrl: embedUrl,
+      embedUrl: "https://app.powerbi.com/reportEmbed?reportId=" + reportId,
       accessToken: accessToken,
       tokenType: models.TokenType.Embed,
       permissions: models.Permissions.All,
@@ -62,36 +62,10 @@ export class ReportComponent {
         }
       }
     };
-
-    const reportContainer = <HTMLElement>document.getElementById('powerbi-report');
-    let report = powerbi.embed(reportContainer, config) as powerbiClient.Report;
-    
-    report.off("loaded");
-
-    report.on("loaded", function () {
-      loadedResolve();
-      report.off("loaded");
-    });
-
-    report.off("error");
-
-    report.on("error", function (event: powerbiClient.service.ICustomEvent<any>) {
-      console.log(event.detail);
-    });
-
-    report.off("rendered");
-
-    report.on("rendered", function () {
-      renderedResolve();
-      report.off("rendered");
-    });
   }
 
   logout(status: boolean) {
-    if (status) {
-      localStorage.removeItem('token');
-      this.authService.logout();
-    }
+    this.authService.logout(status);
   }
 
 }

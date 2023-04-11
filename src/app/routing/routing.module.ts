@@ -15,7 +15,7 @@ const routes: Routes = [
     component: LoginComponent
   },
   {
-    path: 'report/:reportId/dataset/:datasetId',
+    path: 'report/:reportId',
     component: ReportComponent,
     canActivate: [AuthGuard] 
   },

@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Reports } from 'src/app/models/model/reports';
 import { EmbeddedToken } from 'src/app/models/model/embeddedToken';
+import { Report } from 'src/app/models/model/report';
 
 @Injectable({
     providedIn: 'root'
@@ -33,6 +34,11 @@ export class PowerBIService {
     public getReports(): Observable<Reports> {
         const headers = this.getHeaders();
         return this.http.get<Reports>(this.baseUrl + '/reports', { headers: headers });
+    }
+
+    public getReport(reportId: string): Observable<Report> {
+        const headers = this.getHeaders();
+        return this.http.get<Report>(this.baseUrl + '/reports/' + reportId, { headers: headers });
     }
 
     private getHeaders(): HttpHeaders {
