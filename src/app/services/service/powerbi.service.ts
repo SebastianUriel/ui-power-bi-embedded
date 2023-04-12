@@ -4,6 +4,9 @@ import { Observable } from 'rxjs';
 import { Reports } from 'src/app/models/model/reports';
 import { EmbeddedToken } from 'src/app/models/model/embeddedToken';
 import { Report } from 'src/app/models/model/report';
+import { Dashboards } from 'src/app/models/model/dashboards';
+import { Dashboard, Tile } from 'powerbi-client';
+import { Tiles } from 'src/app/models/model/tiles';
 
 @Injectable({
     providedIn: 'root'
@@ -17,16 +20,8 @@ export class PowerBIService {
     public getEmbeddedToken(reportId: string, datasetId: string): Observable<EmbeddedToken> {
         const headers = this.getHeaders();
         let request = {
-            datasets: [
-                {
-                    id: datasetId
-                }
-            ],
-            reports: [ 
-                {
-                    id: reportId
-                }
-            ]
+            datasets: [{ id: datasetId }],
+            reports: [{ id: reportId }]
         };
         return this.http.post<EmbeddedToken>(this.baseUrl + '/GenerateToken', request, { headers: headers });
     }
@@ -39,6 +34,26 @@ export class PowerBIService {
     public getReport(reportId: string): Observable<Report> {
         const headers = this.getHeaders();
         return this.http.get<Report>(this.baseUrl + '/reports/' + reportId, { headers: headers });
+    }
+
+    public getDashboards(): Observable<Dashboards> {
+        const headers = this.getHeaders();
+        return this.http.get<Dashboards>(this.baseUrl + '/dashboards', { headers: headers });
+    }
+
+    public getDashboard(dashboardId: string): Observable<Dashboard> {
+        const headers = this.getHeaders();
+        return this.http.get<Dashboard>(this.baseUrl + '/dashboards/' + dashboardId, { headers: headers });
+    }
+
+    public getTiles(dashboardId: string): Observable<Tiles> {
+        const headers = this.getHeaders();
+        return this.http.get<Tiles>(this.baseUrl + '/dashboards/' + dashboardId + '/tiles', { headers: headers });
+    }
+
+    public getTile(dashboardId: string, tileId: string): Observable<Tile> {
+        const headers = this.getHeaders();
+        return this.http.get<Tile>(this.baseUrl + '/dashboards/' + dashboardId + '/tiles/' + tileId, { headers: headers });
     }
 
     private getHeaders(): HttpHeaders {

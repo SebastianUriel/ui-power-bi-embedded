@@ -25,11 +25,7 @@ export class ReportsComponent implements OnInit {
   }
 
   showReport(reportId: string) {
-    this.router.navigate(['/report', reportId]);
-  }
-
-  logout(status: boolean) {
-    this.authService.logout(status);
+    this.router.navigate(['/app/report', reportId]);
   }
 
 }

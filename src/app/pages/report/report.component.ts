@@ -65,8 +65,4 @@ export class ReportComponent {
     };
   }
 
-  logout(status: boolean) {
-    this.authService.logout(status);
-  }
-
 }

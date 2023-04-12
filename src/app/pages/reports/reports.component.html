@@ -1,28 +1,23 @@
-<section class="main">
-    <app-navbar (logoutActived)="logout($event)"></app-navbar>
-
-    <div class="main-container">
-        <div class="container">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Nombre del reporte</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tfoot>
-                    <tr>
-                        <th>Nombre del reporte</th>
-                        <th>Acciones</th>
-                    </tr>
-                </tfoot>
-                <tbody>
-                    <tr *ngFor="let report of reports">
-                        <td>{{report.name}}</td>
-                        <td><a class="button is-primary is-light" (click)="showReport(report.id)">Ver</a></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</section>
+<div class="container">
+    <h1 class="title">Reportes</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nombre del reporte</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th>Nombre del reporte</th>
+                <th>Acciones</th>
+            </tr>
+        </tfoot>
+        <tbody>
+            <tr *ngFor="let report of reports">
+                <td>{{report.name}}</td>
+                <td><a class="button is-primary is-light" (click)="showReport(report.id)">Ver</a></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

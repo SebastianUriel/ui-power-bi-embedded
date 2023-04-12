@@ -20,7 +20,7 @@ export class AuthService {
 
   public isActiveAccount() {
     if (this.msalService.instance.getActiveAccount() != null) {
-      this.router.navigate(['/reports']);
+      this.router.navigate(['/app/home']);
     }
   }
 
@@ -31,7 +31,7 @@ export class AuthService {
       .subscribe((response: AuthenticationResult) => {
         this.msalService.instance.setActiveAccount(response.account);
         localStorage.setItem('token', response.accessToken);
-        this.router.navigate(['/reports']);
+        this.router.navigate(['/app/home']);
       });
   }
 

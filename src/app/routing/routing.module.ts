@@ -3,27 +3,17 @@ import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 import { PagesModule } from '../pages/pages.module';
 import { LoginComponent } from '../pages/login/login.component';
-import { ReportComponent } from '../pages/report/report.component';
-import { ReportsComponent } from '../pages/reports/reports.component';
 import { SharedModule } from '../shared/shared.module';
-import { AuthGuard } from '../shared/guards/auth.guard';
-import { UserAuthGuard } from '../shared/guards/user-auth.guard';
 
 const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: 'login' },
   {
     path: 'login',
     component: LoginComponent
   },
-  {
-    path: 'report/:reportId',
-    component: ReportComponent,
-    canActivate: [UserAuthGuard, AuthGuard] 
-  },
-  {
-    path: 'reports',
-    component: ReportsComponent,
-    canActivate: [UserAuthGuard, AuthGuard]
+  { 
+    path: '', 
+    pathMatch: 'full', 
+    redirectTo: '/login'
   }
 ];
 
@@ -31,9 +21,9 @@ const routes: Routes = [
   declarations: [],
   imports: [
     CommonModule,
+    RouterModule.forRoot(routes),
     PagesModule,
-    SharedModule,
-    [RouterModule.forRoot(routes)]
+    SharedModule
   ],
   exports: [
     RouterModule

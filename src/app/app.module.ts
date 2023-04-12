@@ -6,7 +6,6 @@ import { IPublicClientApplication, PublicClientApplication } from '@azure/msal-b
 import { AppComponent } from './app.component';
 import { RoutingModule } from './routing/routing.module';
 import { PagesModule } from './pages/pages.module';
-import { SharedModule } from './shared/shared.module';
 
 const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigator.userAgent.indexOf('Trident/') > -1;
 
@@ -32,9 +31,7 @@ export function MSALInstanceFactory(): IPublicClientApplication {
   imports: [
     BrowserModule,
     MsalModule,
-    PagesModule,
-    RoutingModule,
-    SharedModule
+    RoutingModule
   ],
   providers: [
     {
