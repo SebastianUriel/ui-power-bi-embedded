@@ -15,6 +15,7 @@ export class ReportComponent {
   public reportData?: any;
   public embededToken?: any;
   public hasError: boolean = false;
+  public inProgress: boolean = true;
 
   public powerbiReport: any = {
     embedConfig: null,
@@ -36,11 +37,15 @@ export class ReportComponent {
   async ngOnInit() {
     await this.authService.handleActiveAccount();
     if (this.reportId) {
-      this.powerbiReport.embedConfig = null;
-      this.hasError = false;
-      this.reportData = await this.powerbiService.getReport(this.reportId).toPromise();
-      this.embededToken = await this.powerbiService.getEmbeddedToken(this.reportData?.id, this.reportData?.datasetId).toPromise();
-      this.showReport(this.reportData?.id, this.embededToken?.token);
+      try {
+        this.powerbiReport.embedConfig = null;
+        this.hasError = false;
+        this.reportData = await this.powerbiService.getReport(this.reportId).toPromise();
+        this.embededToken = await this.powerbiService.getEmbeddedToken(this.reportData?.id, this.reportData?.datasetId).toPromise();
+        this.showReport(this.reportData?.id, this.embededToken?.token);
+      } catch (error) {
+        this.inProgress = false;
+      }
     }
   }
 
@@ -63,6 +68,7 @@ export class ReportComponent {
         }
       }
     };
+    this.inProgress = false;
   }
 
 }

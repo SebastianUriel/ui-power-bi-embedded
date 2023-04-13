@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/service/auth.service';
+import { PowerBIService } from 'src/app/services/service/powerbi.service';
 
 @Component({
   selector: 'app-dashboards',
@@ -7,9 +10,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DashboardsComponent implements OnInit {
 
-  constructor() { }
+  public dashboards?: any[];
 
-  ngOnInit(): void {
-  }
+  constructor(private authService: AuthService,
+    private powerbiService: PowerBIService,
+    private router: Router) { }
+
+    async ngOnInit() {
+      await this.authService.handleActiveAccount();
+      if (!this.dashboards) {
+        this.powerbiService.getDashboards().subscribe(dashboards => this.dashboards = dashboards?.value);
+      }
+    }
+
+    showDashboard(dashboardId: string) {
+      this.router.navigate(['/app/dashboard', dashboardId]);
+    }
 
 }

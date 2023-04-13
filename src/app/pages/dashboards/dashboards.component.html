@@ -1,1 +1,23 @@
-<p>dashboards works!</p>
+<div class="dashboards-content">
+    <h1 class="title">Dashboards</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nombre del dashboard</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th>Nombre del dashboard</th>
+                <th>Acciones</th>
+            </tr>
+        </tfoot>
+        <tbody>
+            <tr *ngFor="let dashboard of dashboards">
+                <td>{{dashboard.displayName}}</td>
+                <td><a class="button is-primary is-light" (click)="showDashboard(dashboard.id)">Ver</a></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

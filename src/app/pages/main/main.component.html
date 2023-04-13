@@ -1,11 +1,9 @@
-<section class="main">
-    <app-navbar (logoutActived)="logout($event)"></app-navbar>
-    <div class="main-container">
-        <div class="columns">
-            <div class="column"><app-sidebar></app-sidebar></div>
-            <div class="column is-10">
-                <router-outlet></router-outlet>
-            </div>
-        </div>
+<app-navbar (logoutActived)="logout($event)"></app-navbar>
+<div class="main">
+    <div class="main-left-column">
+        <app-sidebar></app-sidebar>
     </div>
-</section>
+    <div class="main-right-column">
+        <router-outlet></router-outlet>
+    </div>
+</div>
