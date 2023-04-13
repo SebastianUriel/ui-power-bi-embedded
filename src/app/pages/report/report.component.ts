@@ -12,7 +12,7 @@ import { AuthService } from 'src/app/services/service/auth.service';
 export class ReportComponent {
 
   public reportId?: string;
-  public reportData?: any;
+  public groupId?: string;
   public embededToken?: any;
   public hasError: boolean = false;
   public inProgress: boolean = true;
@@ -31,19 +31,22 @@ export class ReportComponent {
   constructor(private authService: AuthService,
     private powerbiService: PowerBIService,
     private route: ActivatedRoute) {
-    this.route.params.subscribe(params => this.reportId = params['reportId']);
+    this.route.params.subscribe(params => {
+      this.groupId = params['groupId'];
+      this.reportId = params['reportId'];
+    });
   }
 
   async ngOnInit() {
     await this.authService.handleActiveAccount();
-    if (this.reportId) {
+    if (this.groupId && this.reportId) {
       try {
         this.powerbiReport.embedConfig = null;
         this.hasError = false;
-        this.reportData = await this.powerbiService.getReport(this.reportId).toPromise();
-        this.embededToken = await this.powerbiService.getEmbeddedToken(this.reportData?.id, this.reportData?.datasetId).toPromise();
-        this.showReport(this.reportData?.id, this.embededToken?.token);
+        this.embededToken = await this.powerbiService.getReportEmbeddedToken(this.groupId, this.reportId).toPromise();
+        this.showReport(this.reportId, this.embededToken?.token);
       } catch (error) {
+        console.log(error);
         this.inProgress = false;
       }
     }

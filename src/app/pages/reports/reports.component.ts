@@ -10,6 +10,8 @@ import { PowerBIService } from 'src/app/services/service/powerbi.service';
 })
 export class ReportsComponent implements OnInit {
 
+  public groups?: any[];
+  public groupId?: string;
   public reports?: any[];
 
   constructor(private authService: AuthService,
@@ -19,13 +21,24 @@ export class ReportsComponent implements OnInit {
 
   async ngOnInit() {
     await this.authService.handleActiveAccount();
-    if (!this.reports) {
-      this.powerbiService.getReports().subscribe(reports => this.reports = reports?.value);
+    this.powerbiService.getGroups().subscribe(groups => this.groups = groups?.value);
+  }
+
+  async showReports() {
+    try {
+      if(this.groupId != undefined) {
+       let response = await this.powerbiService.getReports(this.groupId).toPromise();
+       this.reports = response?.value;
+      } else {
+        this.reports = undefined;
+      }
+    } catch(error) {
+      this.reports = undefined;
     }
   }
 
   showReport(reportId: string) {
-    this.router.navigate(['/app/report', reportId]);
+    this.router.navigate(['/app/group', this.groupId, 'report', reportId]);
   }
 
 }

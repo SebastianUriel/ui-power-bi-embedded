@@ -16,6 +16,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { UserAuthGuard } from '../shared/guards/user-auth.guard';
 import { AuthGuard } from '../shared/guards/auth.guard';
 import { SharedModule } from '../shared/shared.module';
+import { FormsModule } from '@angular/forms';
 
 const childRoutes: Routes = [
   {
@@ -34,7 +35,7 @@ const childRoutes: Routes = [
         canActivate: [UserAuthGuard, AuthGuard]
       },
       {
-        path: 'report/:reportId',
+        path: 'group/:groupId/report/:reportId',
         component: ReportComponent,
         canActivate: [UserAuthGuard, AuthGuard]
       },
@@ -44,17 +45,17 @@ const childRoutes: Routes = [
         canActivate: [UserAuthGuard, AuthGuard]
       },
       {
-        path: 'dashboard/:dashboardId',
+        path: 'group/:groupId/dashboard/:dashboardId',
         component: DashboardComponent,
         canActivate: [UserAuthGuard, AuthGuard]
       },
       {
-        path: 'dashboard/:dashboardId/tiles',
+        path: 'group/:groupId/dashboard/:dashboardId/tiles',
         component: TilesComponent,
         canActivate: [UserAuthGuard, AuthGuard]
       },
       {
-        path: 'dashboard/:dashboardId/tile/:tileId',
+        path: 'group/:groupId/dashboard/:dashboardId/tile/:tileId',
         component: TileComponent,
         canActivate: [UserAuthGuard, AuthGuard]
       }
@@ -80,6 +81,7 @@ const childRoutes: Routes = [
     ServicesModule,
     ComponentsModule,
     SharedModule,
+    FormsModule,
     RouterModule.forChild(childRoutes)
   ],
   exports: [

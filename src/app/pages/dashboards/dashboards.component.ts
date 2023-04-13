@@ -10,6 +10,8 @@ import { PowerBIService } from 'src/app/services/service/powerbi.service';
 })
 export class DashboardsComponent implements OnInit {
 
+  public groups?: any[];
+  public groupId?: string;
   public dashboards?: any[];
 
   constructor(private authService: AuthService,
@@ -18,8 +20,19 @@ export class DashboardsComponent implements OnInit {
 
     async ngOnInit() {
       await this.authService.handleActiveAccount();
-      if (!this.dashboards) {
-        this.powerbiService.getDashboards().subscribe(dashboards => this.dashboards = dashboards?.value);
+      this.powerbiService.getGroups().subscribe(groups => this.groups = groups?.value);
+    }
+
+    async showDashboards() {
+      try {
+        if(this.groupId != undefined) {
+         let response = await this.powerbiService.getDashboards(this.groupId).toPromise();
+         this.dashboards = response?.value;
+        } else {
+          this.dashboards = undefined;
+        }
+      } catch(error) {
+        this.dashboards = undefined;
       }
     }
 
