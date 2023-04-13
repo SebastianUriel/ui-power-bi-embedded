@@ -37,7 +37,11 @@ export class DashboardsComponent implements OnInit {
     }
 
     showDashboard(dashboardId: string) {
-      this.router.navigate(['/app/dashboard', dashboardId]);
+      this.router.navigate(['/app/group', this.groupId, 'dashboard', dashboardId]);
+    }
+
+    showTiles(dashboardId: string) {
+      this.router.navigate(['/app/group', this.groupId, 'dashboard', dashboardId, 'tiles']);
     }
 
 }

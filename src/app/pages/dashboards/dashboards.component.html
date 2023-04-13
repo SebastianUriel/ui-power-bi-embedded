@@ -36,7 +36,10 @@
         <tbody>
             <tr *ngFor="let dashboard of dashboards">
                 <td>{{dashboard.displayName}}</td>
-                <td><a class="button is-primary is-light" (click)="showDashboard(dashboard.id)">Ver</a></td>
+                <td>
+                    <a class="button is-primary is-light mr-1" (click)="showDashboard(dashboard.id)">Ver</a>
+                    <a class="button is-info is-light" (click)="showTiles(dashboard.id)">Tiles</a>
+                </td>
             </tr>
         </tbody>
     </table>
